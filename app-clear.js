@@ -1,5 +1,4 @@
 var roundScore, activePlayer, scores, gamePlaying, previousValue;
-
 // Calling Init function to initialize the game
 init();
 
@@ -18,9 +17,6 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
         if(dice === 6 && previousValue === 6){
             // Player looses score
             scores[activePlayer] = 0;
-            console.log(dice);
-            console.log(dice+previousValue);
-            console.log(activePlayer);
             document.querySelector('#score-' + activePlayer).textContent = '0';
             newPlayer();
 
@@ -31,14 +27,12 @@ document.querySelector('.btn-roll').addEventListener('click', function () {
             roundScore += dice;
             document.querySelector('#current-' + activePlayer).textContent = roundScore;
         } else {
-            console.log(dice);
             //Next player
             newPlayer();
         }
 
         previousValue = dice;
     }
-
 });
 
 // Hold event
@@ -50,8 +44,21 @@ document.querySelector('.btn-hold').addEventListener('click', function () {
         // 2. Update the UI
         document.querySelector('#score-' + activePlayer).textContent = scores[activePlayer];
 
+        // Taking input of the winning score
+        var input = document.querySelector(".final-score").value;
+        var winningScore;
+
+        // Undefined, 0, null or "" are COERCED to false.
+        // Anything else is COERCED to true
+        // Default winning score 50
+        if(input){
+            winningScore = input;
+        }else{
+            winningScore=50;
+        }
+
         // 3. Check if the player won the game
-        if (scores[activePlayer] >= 50) {
+        if (scores[activePlayer] >= winningScore) {
             document.querySelector('#name-' + activePlayer).textContent = 'WINNER !';
             document.querySelector('.dice-1').style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
@@ -91,6 +98,7 @@ function init() {
     gamePlaying = true;
 
     document.querySelector('.dice-1').style.display = 'none';
+
 
     document.getElementById('score-0').textContent = '0'
     document.getElementById('score-1').textContent = '0'
